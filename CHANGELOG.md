@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/wize-works/wize-log/compare/v1.1.0...v1.1.1) (2025-05-01)
+
+
+### Bug Fixes
+
+* Use optional chaining for logger info messages ([1a5a9b2](https://github.com/wize-works/wize-log/commit/1a5a9b2b4381fdf2bdd0c8735a351f0e2ff39384))
+
 # [1.1.0](https://github.com/wize-works/wize-log/compare/v1.0.0...v1.1.0) (2025-05-01)
 
 
