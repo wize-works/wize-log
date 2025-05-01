@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/wize-works/wize-log/compare/v1.1.1...v1.1.2) (2025-05-01)
+
+
+### Bug Fixes
+
+* Update API ready message to reflect correct project name ([9e80850](https://github.com/wize-works/wize-log/commit/9e80850d00b17b99b11dab826a2fb35a7f43a7b9))
+
 ## [1.1.1](https://github.com/wize-works/wize-log/compare/v1.1.0...v1.1.1) (2025-05-01)
 
 
