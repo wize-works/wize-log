@@ -68,7 +68,7 @@ const start = async () => {
 
     app.listen(port, () => {
         console.log(
-            `🚀 wize-example API ready at http://localhost:${port}/graphql`
+            `🚀 wize-log API ready at http://localhost:${port}/graphql`
         );
     });
 };
