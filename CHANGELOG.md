@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/wize-works/wize-log/compare/v1.2.0...v1.3.0) (2025-05-03)
+
+
+### Features
+
+* Update @wizeworks/graphql-factory-mongo dependency to version 1.26.0 ([b4375a4](https://github.com/wize-works/wize-log/commit/b4375a4a1b0e91112e9e434a9dbe08fc344fe82a))
+
 # [1.2.0](https://github.com/wize-works/wize-log/compare/v1.1.3...v1.2.0) (2025-05-03)
 
 
