@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/wize-works/wize-log/compare/v1.1.2...v1.1.3) (2025-05-03)
+
+
+### Bug Fixes
+
+* Update default database name from 'wize-example' to 'wize-log' ([f400579](https://github.com/wize-works/wize-log/commit/f4005793a3f2ade6fe4133649741e96c4e52cfda))
+
 ## [1.1.2](https://github.com/wize-works/wize-log/compare/v1.1.1...v1.1.2) (2025-05-01)
 
 
