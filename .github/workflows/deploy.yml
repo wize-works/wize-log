@@ -89,7 +89,6 @@ jobs:
         with:
           name: build-metadata
           path: metadata.txt
-
   aks-deploy:
     name: Deploy to AKS
     needs: docker-build-and-push
@@ -100,63 +99,65 @@ jobs:
         contents: write
         deployments: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        - name: Checkout code
+          uses: actions/checkout@v4
 
-      - name: Log in to Azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        - name: Log in to Azure
+          uses: azure/login@v2
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Install kubelogin
-        uses: azure/use-kubelogin@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - name: Install kubelogin
+          uses: azure/use-kubelogin@v1
+
+        - name: Set AKS Context with admin access
+          uses: azure/aks-set-context@v4
+          with:
+            cluster-name: ${{ secrets.AKS_CLUSTER }}
+            resource-group: ${{ secrets.AZURE_RG }}
+            admin: true
+
+        - name: Convert kubeconfig to use Azure CLI token
+          run: kubelogin convert-kubeconfig -l azurecli
+
+        - name: Create GitHub deployment
+          id: deployment
+          uses: bobheadxi/deployments@v1
+          with:
+            step: start
+            token: ${{ secrets.GITHUB_TOKEN }}
+            env: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+
+        - name: Debug environment variables
+          run: |
+            echo "IMAGE_TAG=${{ needs.docker-build-and-push.outputs.version }}"
+            echo "ACR_NAME=${{ secrets.ACR_NAME }}"
+
+        - name: Render deployment.yaml with secrets
+          run: |
+            echo "VERSION=${{ needs.docker-build-and-push.outputs.version }}" >> $GITHUB_ENV
+            envsubst < deployment/deployment.yaml > deployment/deployment.final.yaml
+          env:
+            IMAGE_TAG: ${{ needs.docker-build-and-push.outputs.version }}
+            ACR_NAME: ${{ secrets.ACR_NAME }}
+            MONGO_URI: ${{ secrets.MONGO_URI }}
+            SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+            DB_NAME: ${{ secrets.DB_NAME }}
+
+        - name: Deploy to AKS
+          run: |
+            kubectl apply -f deployment/deployment.final.yaml
+            kubectl apply -f deployment/service.yaml
+            kubectl apply -f deployment/ingress.yaml
+            kubectl rollout status deployment/${{ env.IMAGE_NAME }} -n wizeworks
+
+        - name: Mark deployment as successful
+          if: success()
+          uses: bobheadxi/deployments@v1
+          with:
+            step: finish
+            token: ${{ secrets.GITHUB_TOKEN }}
+            status: success
+            env: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+            deployment_id: ${{ steps.deployment.outputs.deployment_id }}
         
-
-      - name: Set AKS Context
-        uses: azure/aks-set-context@v4
-        with:
-          cluster-name: ${{ secrets.AKS_CLUSTER }}
-          resource-group: ${{ secrets.AZURE_RG }}
-
-      - name: Create GitHub deployment
-        id: deployment
-        uses: bobheadxi/deployments@v1
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: ${{ github.ref_name == 'main' && 'production' || 'development' }}
-
-      - name: Debug environment variables
-        run: |
-          echo "IMAGE_TAG=${{ needs.docker-build-and-push.outputs.version }}"
-          echo "ACR_NAME=${{ secrets.ACR_NAME }}"
-
-      - name: Render deployment.yaml with secrets
-        run: |
-          echo "VERSION=${{ needs.docker-build-and-push.outputs.version }}" >> $GITHUB_ENV
-          envsubst < deployment/deployment.yaml > deployment/deployment.final.yaml
-        env:
-          IMAGE_TAG: ${{ needs.docker-build-and-push.outputs.version }}
-          ACR_NAME: ${{ secrets.ACR_NAME }}
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-
-      - name: Deploy to AKS
-        run: |
-          kubectl apply -f deployment/deployment.final.yaml
-          kubectl apply -f deployment/service.yaml
-          kubectl apply -f deployment/ingress.yaml
-          kubectl rollout status deployment/${{ env.IMAGE_NAME }} -n wizeworks
-
-      - name: Mark deployment as successful
-        if: success()
-        uses: bobheadxi/deployments@v1
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: success
-          env: ${{ github.ref_name == 'main' && 'production' || 'development' }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
