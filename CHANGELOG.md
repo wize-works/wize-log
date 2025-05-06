@@ -1,3 +1,11 @@
+# [1.6.0](https://github.com/wize-works/wize-log/compare/v1.5.0...v1.6.0) (2025-05-06)
+
+
+### Features
+
+* Update @wizeworks/graphql-factory-mongo dependency to version 1.31.0 ([30a8efc](https://github.com/wize-works/wize-log/commit/30a8efcd21d3ac6860598152f88687d086247dd0))
+* Update AKS deployment steps for improved context setup and authentication ([c813932](https://github.com/wize-works/wize-log/commit/c813932e74cd9cdb939086e99eca8fee4def8351))
+
 # [1.5.0](https://github.com/wize-works/wize-log/compare/v1.4.0...v1.5.0) (2025-05-05)
 
 
