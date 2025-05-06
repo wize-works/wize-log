@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/wize-works/wize-log/compare/v1.6.0...v1.7.0) (2025-05-06)
+
+
+### Features
+
+* Update kubelogin action to specify version v0.0.25 ([1f6e458](https://github.com/wize-works/wize-log/commit/1f6e45859aeaa9f661d7d34df85679c2e8e7f1a2))
+
 # [1.6.0](https://github.com/wize-works/wize-log/compare/v1.5.0...v1.6.0) (2025-05-06)
 
 
