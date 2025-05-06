@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/wize-works/wize-log/compare/v1.7.0...v1.7.1) (2025-05-06)
+
+
+### Bug Fixes
+
+* Update @wizeworks/graphql-factory-mongo dependency to version 1.33.0 ([be37e77](https://github.com/wize-works/wize-log/commit/be37e77206e0baea9b9a55ab1022cbb207e777da))
+
 # [1.7.0](https://github.com/wize-works/wize-log/compare/v1.6.0...v1.7.0) (2025-05-06)
 
 
